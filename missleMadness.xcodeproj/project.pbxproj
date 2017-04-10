@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F0D1C301E9958AE00F62DF8 /* BMgermar.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 4F0D1C2F1E9958AE00F62DF8 /* BMgermar.TTF */; };
+		4F0D1C331E9AA17500F62DF8 /* IntroScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4F0D1C321E9AA17500F62DF8 /* IntroScene.sks */; };
+		4F0D1C351E9AA18600F62DF8 /* IntroScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0D1C341E9AA18600F62DF8 /* IntroScene.swift */; };
 		4F5BC4C41E96FE50002BA2A3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5BC4C31E96FE50002BA2A3 /* AppDelegate.swift */; };
 		4F5BC4C61E96FE50002BA2A3 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4F5BC4C51E96FE50002BA2A3 /* GameScene.sks */; };
 		4F5BC4C81E96FE50002BA2A3 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4F5BC4C71E96FE50002BA2A3 /* Actions.sks */; };
@@ -18,6 +21,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4F0D1C2F1E9958AE00F62DF8 /* BMgermar.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; name = BMgermar.TTF; path = missleMadness/BMgermar.TTF; sourceTree = "<group>"; };
+		4F0D1C321E9AA17500F62DF8 /* IntroScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = IntroScene.sks; sourceTree = "<group>"; };
+		4F0D1C341E9AA18600F62DF8 /* IntroScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroScene.swift; sourceTree = "<group>"; };
 		4F5BC4C01E96FE50002BA2A3 /* missleMadness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = missleMadness.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F5BC4C31E96FE50002BA2A3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4F5BC4C51E96FE50002BA2A3 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -41,6 +47,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4F0D1C311E9958C900F62DF8 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				4F0D1C2F1E9958AE00F62DF8 /* BMgermar.TTF */,
+			);
+			name = "Supporting Files";
+			path = ..;
+			sourceTree = "<group>";
+		};
 		4F5BC4B71E96FE50002BA2A3 = {
 			isa = PBXGroup;
 			children = (
@@ -66,9 +81,12 @@
 				4F5BC4C91E96FE50002BA2A3 /* GameScene.swift */,
 				4F5BC4CB1E96FE50002BA2A3 /* GameViewController.swift */,
 				4F5BC4CD1E96FE50002BA2A3 /* Main.storyboard */,
+				4F0D1C311E9958C900F62DF8 /* Supporting Files */,
 				4F5BC4D01E96FE50002BA2A3 /* Assets.xcassets */,
 				4F5BC4D21E96FE50002BA2A3 /* LaunchScreen.storyboard */,
 				4F5BC4D51E96FE50002BA2A3 /* Info.plist */,
+				4F0D1C321E9AA17500F62DF8 /* IntroScene.sks */,
+				4F0D1C341E9AA18600F62DF8 /* IntroScene.swift */,
 			);
 			path = missleMadness;
 			sourceTree = "<group>";
@@ -134,10 +152,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F5BC4CF1E96FE50002BA2A3 /* Main.storyboard in Resources */,
+				4F0D1C331E9AA17500F62DF8 /* IntroScene.sks in Resources */,
 				4F5BC4C61E96FE50002BA2A3 /* GameScene.sks in Resources */,
 				4F5BC4D11E96FE50002BA2A3 /* Assets.xcassets in Resources */,
 				4F5BC4D41E96FE50002BA2A3 /* LaunchScreen.storyboard in Resources */,
 				4F5BC4C81E96FE50002BA2A3 /* Actions.sks in Resources */,
+				4F0D1C301E9958AE00F62DF8 /* BMgermar.TTF in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,6 +169,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F5BC4CA1E96FE50002BA2A3 /* GameScene.swift in Sources */,
+				4F0D1C351E9AA18600F62DF8 /* IntroScene.swift in Sources */,
 				4F5BC4CC1E96FE50002BA2A3 /* GameViewController.swift in Sources */,
 				4F5BC4C41E96FE50002BA2A3 /* AppDelegate.swift in Sources */,
 			);
@@ -316,6 +337,7 @@
 				4F5BC4DA1E96FE50002BA2A3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

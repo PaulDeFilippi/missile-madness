@@ -2,16 +2,25 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "Spaceship.png"
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "intro_screen.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
       "scale" : "3x"
+    },
+    {
+      "idiom" : "ipad",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "ipad",
+      "filename" : "intro_screen@2x.png",
+      "scale" : "2x"
     }
   ],
   "info" : {
