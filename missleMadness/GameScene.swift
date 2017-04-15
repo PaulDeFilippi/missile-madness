@@ -184,6 +184,23 @@ class GameScene: SKScene {
     
     func createBullet() {
         
+        let bullet = SKSpriteNode(imageNamed: "bullet")
+        bullet.physicsBody = SKPhysicsBody(circleOfRadius: bullet.size.width / 3)
+        bullet.physicsBody!.categoryBitMask = BodyType.bullet.rawValue
+        bullet.zRotation = theRotation
+        
+        let xDistance:CGFloat = sin(theRotation) * length
+        let yDistance:CGFloat = cos(theRotation) * length
+        
+        bullet.position = CGPoint(x: turret.position.x - xDistance, y: turret.position.y + yDistance)
+        
+        addChild(bullet)
+        
+        
+        
+        
+        
+        
         
         
     }
