@@ -18,6 +18,8 @@
 		4F5BC4CF1E96FE50002BA2A3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F5BC4CD1E96FE50002BA2A3 /* Main.storyboard */; };
 		4F5BC4D11E96FE50002BA2A3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F5BC4D01E96FE50002BA2A3 /* Assets.xcassets */; };
 		4F5BC4D41E96FE50002BA2A3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F5BC4D21E96FE50002BA2A3 /* LaunchScreen.storyboard */; };
+		4F8FF8341EA40CA200F10971 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 4F8FF8331EA40CA200F10971 /* spark.png */; };
+		4FC0E3321EA2986F0084C383 /* FIreParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4FC0E3311EA2986F0084C383 /* FIreParticles.sks */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +36,8 @@
 		4F5BC4D01E96FE50002BA2A3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4F5BC4D31E96FE50002BA2A3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4F5BC4D51E96FE50002BA2A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4F8FF8331EA40CA200F10971 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
+		4FC0E3311EA2986F0084C383 /* FIreParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FIreParticles.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +91,8 @@
 				4F5BC4D51E96FE50002BA2A3 /* Info.plist */,
 				4F0D1C321E9AA17500F62DF8 /* IntroScene.sks */,
 				4F0D1C341E9AA18600F62DF8 /* IntroScene.swift */,
+				4FC0E3311EA2986F0084C383 /* FIreParticles.sks */,
+				4F8FF8331EA40CA200F10971 /* spark.png */,
 			);
 			path = missleMadness;
 			sourceTree = "<group>";
@@ -152,10 +158,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F5BC4CF1E96FE50002BA2A3 /* Main.storyboard in Resources */,
+				4F8FF8341EA40CA200F10971 /* spark.png in Resources */,
 				4F0D1C331E9AA17500F62DF8 /* IntroScene.sks in Resources */,
 				4F5BC4C61E96FE50002BA2A3 /* GameScene.sks in Resources */,
 				4F5BC4D11E96FE50002BA2A3 /* Assets.xcassets in Resources */,
 				4F5BC4D41E96FE50002BA2A3 /* LaunchScreen.storyboard in Resources */,
+				4FC0E3321EA2986F0084C383 /* FIreParticles.sks in Resources */,
 				4F5BC4C81E96FE50002BA2A3 /* Actions.sks in Resources */,
 				4F0D1C301E9958AE00F62DF8 /* BMgermar.TTF in Resources */,
 			);

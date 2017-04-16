@@ -8,6 +8,7 @@
 
 import SpriteKit
 import GameplayKit
+import AVFoundation
 
 enum BodyType:UInt32 {
     
@@ -33,6 +34,10 @@ class GameScene: SKScene {
     let target = SKSpriteNode(imageNamed: "target")
     var ground = SKSpriteNode()
     
+    let loopingBG = SKSpriteNode(imageNamed: "stars")
+    let loopingBG2 = SKSpriteNode(imageNamed: "stars")
+    let moon = SKSpriteNode(imageNamed: "moon")
+    
     let length:CGFloat = 200
     var theRotation:CGFloat = 0
     var offSet:CGFloat = 0
@@ -50,6 +55,9 @@ class GameScene: SKScene {
             
             isPhone = true
         }
+        
+        //important - this is how we adjust overall gravity
+        physicsWorld.gravity = CGVector(dx: 0, dy:  -0.1)
         
         screenWidth = self.view!.bounds.width
         screenHeight = self.view!.bounds.height
@@ -70,7 +78,50 @@ class GameScene: SKScene {
         createGround()
         addPlayer()
         
+        setUpbackground()
+        
         createInstructionLabel()
+        
+    }
+    
+    func setUpbackground() {
+        
+        addChild(moon)
+        addChild(loopingBG)
+        addChild(loopingBG2)
+        
+        moon.zPosition = -199
+        loopingBG.zPosition = -200
+        loopingBG2.zPosition = -200
+        
+        loopingBG.position = CGPoint(x: 0, y: loopingBG.size.height / 2)
+        loopingBG2.position = CGPoint(x: loopingBG2.size.width, y: loopingBG.size.height / 2)
+        moon.position = CGPoint(x: (screenWidth / 2) + moon.size.width, y: screenHeight / 2)
+        
+        startLoopingBackground()
+        
+    }
+    
+    func startLoopingBackground() {
+        
+        let move = SKAction.moveBy(x: -loopingBG.size.width, y: 0, duration: 80)
+        let moveBack = SKAction.moveBy(x: loopingBG.size.width, y: 0, duration: 0)
+        let seq = SKAction.sequence([move, moveBack])
+        let rep = SKAction.repeatForever(seq)
+        
+        loopingBG.run(rep)
+        loopingBG2.run(rep)
+        
+        let moveMoon = SKAction.moveBy(x: -screenWidth * 1.3 , y: 0, duration: 60)
+        let moveMoonBack = SKAction.moveBy(x: -screenWidth * 1.3 , y: 0, duration: 0)
+        let wait = SKAction.wait(forDuration: 10)
+        
+        let seqMoon = SKAction.sequence([moveMoon, wait, moveMoonBack])
+        let repeatMoon = SKAction.repeatForever(seqMoon)
+        
+        moon.run(repeatMoon)
+        
+        
         
     }
     
@@ -165,12 +216,12 @@ class GameScene: SKScene {
         
         createBullet()
         
-        rattle(node: playerBase)
-        rattle(node: turret)
+        rattle(playerBase)
+        rattle(turret)
         
     }
     
-    func rattle(node: SKSpriteNode) {
+    func rattle(_ node: SKSpriteNode) {
         
         let rattleUp = SKAction.moveBy(x: 0, y: 5, duration: 0.05)
         let rattleDown = SKAction.moveBy(x: 0, y: -5, duration: 0.05)
@@ -188,20 +239,39 @@ class GameScene: SKScene {
         bullet.physicsBody = SKPhysicsBody(circleOfRadius: bullet.size.width / 3)
         bullet.physicsBody!.categoryBitMask = BodyType.bullet.rawValue
         bullet.zRotation = theRotation
+        bullet.name = "bullet"
         
-        let xDistance:CGFloat = sin(theRotation) * length
-        let yDistance:CGFloat = cos(theRotation) * length
+        let xDistance:CGFloat = sin(theRotation) * 70
+        let yDistance:CGFloat = cos(theRotation) * 70
         
         bullet.position = CGPoint(x: turret.position.x - xDistance, y: turret.position.y + yDistance)
         
         addChild(bullet)
         
+        let forceXDistance:CGFloat = sin(theRotation) * 250
+        let forceYDistance:CGFloat = cos(theRotation) * 250
         
+        let theForce = CGVector(dx: turret.position.x - forceXDistance, dy: turret.position.y + forceYDistance)
         
+        bullet.physicsBody!.applyForce(theForce)
         
+        createFiringParticles( bullet.position, force: theForce)
         
+    }
+    
+    func createFiringParticles(_ location: CGPoint, force: CGVector) {
         
+        let fireEmitter = SKEmitterNode(fileNamed: "FIreParticles")
+        fireEmitter!.position = location
+        fireEmitter!.numParticlesToEmit = 40
+        fireEmitter!.zPosition = 1
+        fireEmitter!.targetNode = self
+
         
+        fireEmitter!.xAcceleration = force.dx
+        fireEmitter!.yAcceleration = force.dy
+        
+        self.addChild(fireEmitter!)
         
     }
     
@@ -231,9 +301,11 @@ class GameScene: SKScene {
         let wait = SKAction.wait(forDuration: 0.5)
         let fadeDown = SKAction.fadeAlpha(to: 0, duration: 0.4)
         let fadeUp = SKAction.fadeAlpha(to: 1, duration: 0.4)
-        let seq = SKAction.sequence([wait, fadeDown, fadeUp])
-        let rep = SKAction.repeatForever(seq)
-        instructionLabel.run(rep)
+        let seq = SKAction.sequence( [wait, fadeDown, fadeUp] )
+        let repeated = SKAction.repeat(seq, count: 3)
+        let remove = SKAction.removeFromParent()
+        let seq2 = SKAction.sequence( [repeated, wait, remove] )
+        instructionLabel.run(seq2)
     }
     
     
