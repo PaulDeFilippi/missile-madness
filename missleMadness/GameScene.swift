@@ -46,6 +46,8 @@ class GameScene: SKScene {
     let tapRec = UITapGestureRecognizer()
     
     var bgSoundPlayer: AVAudioPlayer?
+    
+    var gameIsActive = false
 
     override func didMove(to view: SKView) {
         
@@ -86,7 +88,16 @@ class GameScene: SKScene {
         
         playBackgroundSound("levelsound")
         
+        startGame()
+        
     }
+    
+    
+    
+    // MARK: ======== INITIAL SETUP
+    
+    
+    
     
     func setUpbackground() {
         
@@ -177,6 +188,89 @@ class GameScene: SKScene {
         
         
     }
+    
+    
+    
+    // MARK: ======== START GAME
+    
+    func startGame() {
+        
+        gameIsActive = true
+        
+        // start missiles coming down
+        
+        
+        // add particles / dots behind enemy missiles
+        
+        
+        // initiate drones flying accross
+        
+        
+        // clear off screen objects
+        
+        clearOffScreenItems()
+        
+        
+    }
+    
+    
+    
+    func clearOffScreenItems() {
+        
+        clearBullet()
+        clearEnemyMissiles()
+        
+        
+        print("clearing items")
+        
+        let wait = SKAction.wait(forDuration: 2)
+        let block = SKAction.run(clearOffScreenItems)
+        let seq = SKAction.sequence([ wait, block ])
+        self.run(seq, withKey: "clearAction")
+        
+    }
+    
+    func clearBullet() {
+        
+        self.enumerateChildNodes(withName: "bullet") {
+            node, stop in
+            
+            if (node.position.x < -(self.screenWidth / 2)) {
+                
+                node.removeFromParent()
+                
+            } else if (node.position.x > (self.screenWidth / 2)) {
+                
+                node.removeFromParent()
+            
+            } else if (node.position.y > self.screenHeight) {
+                
+                node.removeFromParent()
+
+            }
+            
+            // this code runs when we find a bullet
+        }
+        
+    }
+    
+    func clearEnemyMissiles() {
+        
+        
+        
+    }
+    
+    
+    // MARK: ======== CREATE ENEMY MISSILES
+    
+    
+    
+    
+    
+    // MARK: ======== ROTATE GESTURE
+    
+    
+    
     
     func rotatedView(_ sender:UIRotationGestureRecognizer) {
         
@@ -327,6 +421,10 @@ class GameScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
     }
+    
+    
+    
+    // MARK: ======== TAP TO SOUNDS
     
     func playBackgroundSound(_ name: String) {
         
