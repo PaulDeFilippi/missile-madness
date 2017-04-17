@@ -44,6 +44,8 @@ class GameScene: SKScene {
     
     let rotateRec = UIRotationGestureRecognizer()
     let tapRec = UITapGestureRecognizer()
+    
+    var bgSoundPlayer: AVAudioPlayer?
 
     override func didMove(to view: SKView) {
         
@@ -82,6 +84,8 @@ class GameScene: SKScene {
         
         createInstructionLabel()
         
+        playBackgroundSound("levelsound")
+        
     }
     
     func setUpbackground() {
@@ -104,7 +108,7 @@ class GameScene: SKScene {
     
     func startLoopingBackground() {
         
-        let move = SKAction.moveBy(x: -loopingBG.size.width, y: 0, duration: 80)
+        let move = SKAction.moveBy(x: -loopingBG.size.width, y: 0, duration: 90)
         let moveBack = SKAction.moveBy(x: loopingBG.size.width, y: 0, duration: 0)
         let seq = SKAction.sequence([move, moveBack])
         let rep = SKAction.repeatForever(seq)
@@ -112,7 +116,7 @@ class GameScene: SKScene {
         loopingBG.run(rep)
         loopingBG2.run(rep)
         
-        let moveMoon = SKAction.moveBy(x: -screenWidth * 1.3 , y: 0, duration: 60)
+        let moveMoon = SKAction.moveBy(x: -screenWidth * 1.3 , y: 0, duration: 70)
         let moveMoonBack = SKAction.moveBy(x: -screenWidth * 1.3 , y: 0, duration: 0)
         let wait = SKAction.wait(forDuration: 10)
         
@@ -240,6 +244,7 @@ class GameScene: SKScene {
         bullet.physicsBody!.categoryBitMask = BodyType.bullet.rawValue
         bullet.zRotation = theRotation
         bullet.name = "bullet"
+        playSound(name: "gun1.caf")
         
         let xDistance:CGFloat = sin(theRotation) * 70
         let yDistance:CGFloat = cos(theRotation) * 70
@@ -322,4 +327,46 @@ class GameScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
     }
+    
+    func playBackgroundSound(_ name: String) {
+        
+        if bgSoundPlayer != nil {
+            
+            bgSoundPlayer!.stop()
+            bgSoundPlayer = nil
+            
+        }
+        
+        let fileURL = Bundle.main.url(forResource: name, withExtension: "mp3")
+        
+        do {
+            bgSoundPlayer = try AVAudioPlayer(contentsOf: fileURL!)
+        } catch {
+            bgSoundPlayer = nil
+        }
+        
+        bgSoundPlayer!.volume = 0.5 //half volume
+        bgSoundPlayer!.numberOfLoops = -1
+        bgSoundPlayer!.prepareToPlay()
+        bgSoundPlayer!.play()
+        
+    }
+    
+    func playSound(name: String) {
+        
+        let theSound = SKAction.playSoundFileNamed(name, waitForCompletion: false)
+        self.run(theSound)
+        
+    }
+    
+    
+    
 }
+
+
+
+
+
+
+
+
