@@ -199,6 +199,8 @@ class GameScene: SKScene {
         
         // start missiles coming down
         
+        initiateEnemyMissile()
+        
         
         // add particles / dots behind enemy missiles
         
@@ -223,7 +225,7 @@ class GameScene: SKScene {
         
         print("clearing items")
         
-        let wait = SKAction.wait(forDuration: 2)
+        let wait = SKAction.wait(forDuration: 1)
         let block = SKAction.run(clearOffScreenItems)
         let seq = SKAction.sequence([ wait, block ])
         self.run(seq, withKey: "clearAction")
@@ -262,6 +264,28 @@ class GameScene: SKScene {
     
     
     // MARK: ======== CREATE ENEMY MISSILES
+    
+    func initiateEnemyMissile() {
+        
+        let wait = SKAction.wait(forDuration: 2)
+        let block = SKAction.run(launchEnemyMissile)
+        let seq = SKAction.sequence([ block, wait ])
+        let rep = SKAction.repeatForever(seq)
+        self.run(rep, withKey: "enemyLaunchAction")
+        
+    }
+    
+    func launchEnemyMissile() {
+        
+        let missile:EnemyMissile = EnemyMissile()
+        missile.createMissile(theImage: "enemyMissile")
+        addChild(missile)
+        
+        let randomX = arc4random_uniform(UInt32(screenWidth))
+        missile.position = CGPoint(x: CGFloat(randomX)  - (screenWidth / 2), y: screenHeight + 50)
+        
+        
+    }
     
     
     
