@@ -204,6 +204,8 @@ class GameScene: SKScene {
         
         // add particles / dots behind enemy missiles
         
+        startDotLoop()
+        
         
         // initiate drones flying accross
         
@@ -284,6 +286,56 @@ class GameScene: SKScene {
         let randomX = arc4random_uniform(UInt32(screenWidth))
         missile.position = CGPoint(x: CGFloat(randomX)  - (screenWidth / 2), y: screenHeight + 50)
         
+        let randomVecX = arc4random_uniform( 20 )
+        
+        let vecX:CGFloat = CGFloat(randomVecX) / 10
+        
+        
+        if ( missile.position.x < 0) {
+            
+            missile.physicsBody?.applyImpulse( CGVector(dx: vecX, dy: 0) )
+            
+        } else {
+            
+            missile.physicsBody?.applyImpulse( CGVector(dx: -vecX, dy: 0) )
+            
+        }
+        
+        
+    }
+    
+    func startDotLoop() {
+        
+        let block = SKAction.run(addDot)
+        let wait = SKAction.wait(forDuration: 1/60)
+        let seq = SKAction.sequence([ block, wait ])
+        let rep = SKAction.repeatForever(seq)
+        self.run(rep, withKey: "dotAction")
+        
+        
+    }
+    
+    func addDot() {
+        
+        self.enumerateChildNodes(withName: "enemyMissile") {
+            node, stop in
+            
+            let dot = SKSpriteNode(imageNamed: "dot")
+            dot.position = node.position
+            self.addChild(dot)
+            dot.zPosition = -1
+            dot.xScale = 0.3
+            dot.yScale = 0.3
+            
+            let fade = SKAction.fadeAlpha(to: 0.0, duration: 3)
+            let grow = SKAction.scale(to: 3.0, duration: 2)
+            let color = SKAction.colorize(with: SKColor.orange, colorBlendFactor: 1, duration: 3)
+            let group = SKAction.group([fade, grow, color])
+            let remove = SKAction.removeFromParent()
+            let seq = SKAction.sequence([group ,remove])
+            dot.run(seq)
+            
+        }
         
     }
     

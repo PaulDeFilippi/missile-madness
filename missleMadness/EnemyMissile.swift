@@ -30,10 +30,9 @@ class EnemyMissile: SKNode {
     
     func createMissile(theImage: String) {
         
-        print("missile was created")
-        
         missileNode = SKSpriteNode(imageNamed: "enemyMissile")
         self.addChild(missileNode)
+        missileNode.zPosition = 1
         
         let body:SKPhysicsBody = SKPhysicsBody(circleOfRadius: missileNode.size.width / 2.25, center:CGPoint(x: 0, y: 0))
         body.isDynamic = true
@@ -42,6 +41,8 @@ class EnemyMissile: SKNode {
         
         body.categoryBitMask = BodyType.enemyMissile.rawValue
         body.contactTestBitMask = BodyType.ground.rawValue | BodyType.bullet.rawValue | BodyType.base.rawValue | BodyType.playerBase.rawValue
+        
+        
         
         
         self.physicsBody = body
@@ -54,17 +55,16 @@ class EnemyMissile: SKNode {
     
     func setUpAnimation() {
         
-        let atlas = SKTextureAtlas(named: "enemyMissile")
-        
         var array = [String]()
         
         for i in 1...10 {
             
-            let nameString = String(format: "enemyMissile%1", i)
+            let nameString = String(format: "enemyMissile%i", i)
             array.append(nameString)
             
         }
         
+        //create another array this time with SKTexture as the type (textures being the .png images)
         var atlasTextures:[SKTexture] = []
         
         for i in 0..<array.count {
@@ -85,7 +85,7 @@ class EnemyMissile: SKNode {
     
     func addParticles() {
         fireEmitter!.name = "fireEmitter"
-        fireEmitter!.zPosition = -1
+        fireEmitter!.zPosition = -2
         fireEmitter!.targetNode = self
         fireEmitter!.particleLifetime = 10
         //fireEmitter!.numParticlesToEmit = 200
