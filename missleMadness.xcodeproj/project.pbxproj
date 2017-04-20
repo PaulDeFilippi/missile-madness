@@ -47,6 +47,8 @@
 		4FC0E3321EA2986F0084C383 /* FIreParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4FC0E3311EA2986F0084C383 /* FIreParticles.sks */; };
 		4FE7C3F01EA57AC700FA9992 /* EnemyMissile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FE7C3EF1EA57AC700FA9992 /* EnemyMissile.swift */; };
 		4FE7C3F21EA5AA3900FA9992 /* enemyMissile.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 4FE7C3F11EA5AA3900FA9992 /* enemyMissile.atlas */; };
+		4FE7C3F41EA7973900FA9992 /* Drone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FE7C3F31EA7973900FA9992 /* Drone.swift */; };
+		4FE7C3F81EA7989E00FA9992 /* drone.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 4FE7C3F71EA7989E00FA9992 /* drone.atlas */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -92,6 +94,8 @@
 		4FC0E3311EA2986F0084C383 /* FIreParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FIreParticles.sks; sourceTree = "<group>"; };
 		4FE7C3EF1EA57AC700FA9992 /* EnemyMissile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnemyMissile.swift; sourceTree = "<group>"; };
 		4FE7C3F11EA5AA3900FA9992 /* enemyMissile.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = enemyMissile.atlas; sourceTree = "<group>"; };
+		4FE7C3F31EA7973900FA9992 /* Drone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Drone.swift; sourceTree = "<group>"; };
+		4FE7C3F71EA7989E00FA9992 /* drone.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = drone.atlas; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,11 +142,13 @@
 				4F5BC4C71E96FE50002BA2A3 /* Actions.sks */,
 				4F5BC4C91E96FE50002BA2A3 /* GameScene.swift */,
 				4FE7C3EF1EA57AC700FA9992 /* EnemyMissile.swift */,
+				4FE7C3F31EA7973900FA9992 /* Drone.swift */,
 				4F5BC4CB1E96FE50002BA2A3 /* GameViewController.swift */,
 				4F5BC4CD1E96FE50002BA2A3 /* Main.storyboard */,
 				4F0D1C311E9958C900F62DF8 /* Supporting Files */,
 				4F8FF8351EA4337400F10971 /* Sounds */,
 				4FE7C3F11EA5AA3900FA9992 /* enemyMissile.atlas */,
+				4FE7C3F71EA7989E00FA9992 /* drone.atlas */,
 				4F5BC4D01E96FE50002BA2A3 /* Assets.xcassets */,
 				4F5BC4D21E96FE50002BA2A3 /* LaunchScreen.storyboard */,
 				4F5BC4D51E96FE50002BA2A3 /* Info.plist */,
@@ -276,6 +282,7 @@
 				4F8FF8561EA433E300F10971 /* fail4.caf in Resources */,
 				4F5BC4D41E96FE50002BA2A3 /* LaunchScreen.storyboard in Resources */,
 				4F8FF85B1EA433E300F10971 /* fail9.caf in Resources */,
+				4FE7C3F81EA7989E00FA9992 /* drone.atlas in Resources */,
 				4F8FF8671EA433E300F10971 /* success2.caf in Resources */,
 				4FC0E3321EA2986F0084C383 /* FIreParticles.sks in Resources */,
 				4F5BC4C81E96FE50002BA2A3 /* Actions.sks in Resources */,
@@ -291,6 +298,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FE7C3F41EA7973900FA9992 /* Drone.swift in Sources */,
 				4FE7C3F01EA57AC700FA9992 /* EnemyMissile.swift in Sources */,
 				4F5BC4CA1E96FE50002BA2A3 /* GameScene.swift in Sources */,
 				4F0D1C351E9AA18600F62DF8 /* IntroScene.swift in Sources */,

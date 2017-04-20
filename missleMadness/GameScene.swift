@@ -48,6 +48,8 @@ class GameScene: SKScene {
     var bgSoundPlayer: AVAudioPlayer?
     
     var gameIsActive = false
+    
+    var activeBase = CGPoint.zero
 
     override func didMove(to view: SKView) {
         
@@ -210,6 +212,9 @@ class GameScene: SKScene {
         // initiate drones flying accross
         
         
+        initiateDrone()
+        
+        
         // clear off screen objects
         
         clearOffScreenItems()
@@ -339,6 +344,74 @@ class GameScene: SKScene {
         
     }
     
+    
+    
+    // MARK: ======== CREATE DRONE
+    
+    
+    
+    func initiateDrone() {
+        
+        let wait = SKAction.wait(forDuration: 10)
+        let block = SKAction.run(launchDrone)
+        let seq = SKAction.sequence([ wait, block ])
+        self.run(seq)
+        
+    }
+    
+    func launchDrone() {
+        
+        let theDrone:Drone = Drone()
+        theDrone.createDrone()
+        addChild(theDrone)
+        theDrone.position = CGPoint(x: (screenWidth / 2) + theDrone.droneNode.size.width, y: screenHeight * 0.8)
+        
+        let move = SKAction.moveBy(x: -(screenWidth + (theDrone.droneNode.size.width * 2)), y: 0, duration: 10)
+        let remove = SKAction.removeFromParent()
+        let seq = SKAction.sequence([move, remove])
+        theDrone.run(seq)
+        
+        // drop bombs
+        
+        let randomDrop = arc4random_uniform(6)
+        let waitToDrop = SKAction.wait(forDuration: CFTimeInterval(randomDrop + 2))
+        let blockDrop = SKAction.run(dropBombFromDrone)
+        let dropSequence = SKAction.sequence([waitToDrop, blockDrop])
+        self.run(dropSequence, withKey: "dropBombAction")
+        
+        // launch next drone
+        
+        let randomTime = arc4random_uniform(20)
+        let wait = SKAction.wait(forDuration: CFTimeInterval(randomTime) + 7)
+        let block = SKAction.run(launchDrone)
+        let seq2 = SKAction.sequence([wait, block])
+        self.run(seq2, withKey: "droneAction")
+        
+    }
+    
+    func dropBombFromDrone() {
+        
+        var dronePosition = CGPoint.zero
+        
+        self.enumerateChildNodes(withName: "drone") {
+            node, stop in
+            
+            dronePosition = node.position
+            
+        }
+        
+        let droneBomb = SKSpriteNode(imageNamed: "droneBomb")
+        droneBomb.name = "droneBomb"
+        droneBomb.position = CGPoint(x: dronePosition.x, y: dronePosition.y - 45)
+        self.addChild(droneBomb)
+        
+        let scaleY = SKAction.scaleX(by: 1, y: 1.5, duration: 0.5)
+        droneBomb.run(scaleY)
+        
+        let move = SKAction.move(to: activeBase, duration: 4)
+        droneBomb.run(move)
+        
+    }
     
     
     
