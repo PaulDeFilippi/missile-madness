@@ -44,6 +44,9 @@
 		4F8FF8651EA433E300F10971 /* success0.caf in Resources */ = {isa = PBXBuildFile; fileRef = 4F8FF84C1EA433E300F10971 /* success0.caf */; };
 		4F8FF8661EA433E300F10971 /* success1.caf in Resources */ = {isa = PBXBuildFile; fileRef = 4F8FF84D1EA433E300F10971 /* success1.caf */; };
 		4F8FF8671EA433E300F10971 /* success2.caf in Resources */ = {isa = PBXBuildFile; fileRef = 4F8FF84E1EA433E300F10971 /* success2.caf */; };
+		4FA26BD51EAA69CE00F72AC7 /* Base.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA26BD41EAA69CE00F72AC7 /* Base.swift */; };
+		4FA26BD71EAA71BD00F72AC7 /* glass.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FA26BD61EAA71BD00F72AC7 /* glass.png */; };
+		4FA26BD91EAA722600F72AC7 /* Glass.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4FA26BD81EAA722600F72AC7 /* Glass.sks */; };
 		4FC0E3321EA2986F0084C383 /* FIreParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4FC0E3311EA2986F0084C383 /* FIreParticles.sks */; };
 		4FE7C3F01EA57AC700FA9992 /* EnemyMissile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FE7C3EF1EA57AC700FA9992 /* EnemyMissile.swift */; };
 		4FE7C3F21EA5AA3900FA9992 /* enemyMissile.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 4FE7C3F11EA5AA3900FA9992 /* enemyMissile.atlas */; };
@@ -91,6 +94,9 @@
 		4F8FF84C1EA433E300F10971 /* success0.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = success0.caf; sourceTree = "<group>"; };
 		4F8FF84D1EA433E300F10971 /* success1.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = success1.caf; sourceTree = "<group>"; };
 		4F8FF84E1EA433E300F10971 /* success2.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = success2.caf; sourceTree = "<group>"; };
+		4FA26BD41EAA69CE00F72AC7 /* Base.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Base.swift; sourceTree = "<group>"; };
+		4FA26BD61EAA71BD00F72AC7 /* glass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = glass.png; sourceTree = "<group>"; };
+		4FA26BD81EAA722600F72AC7 /* Glass.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Glass.sks; sourceTree = "<group>"; };
 		4FC0E3311EA2986F0084C383 /* FIreParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FIreParticles.sks; sourceTree = "<group>"; };
 		4FE7C3EF1EA57AC700FA9992 /* EnemyMissile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnemyMissile.swift; sourceTree = "<group>"; };
 		4FE7C3F11EA5AA3900FA9992 /* enemyMissile.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = enemyMissile.atlas; sourceTree = "<group>"; };
@@ -137,11 +143,16 @@
 		4F5BC4C21E96FE50002BA2A3 /* missleMadness */ = {
 			isa = PBXGroup;
 			children = (
+				4F5BC4C71E96FE50002BA2A3 /* Actions.sks */,
 				4F5BC4C31E96FE50002BA2A3 /* AppDelegate.swift */,
 				4F5BC4C51E96FE50002BA2A3 /* GameScene.sks */,
-				4F5BC4C71E96FE50002BA2A3 /* Actions.sks */,
 				4F5BC4C91E96FE50002BA2A3 /* GameScene.swift */,
+				4FA26BD41EAA69CE00F72AC7 /* Base.swift */,
 				4FE7C3EF1EA57AC700FA9992 /* EnemyMissile.swift */,
+				4FC0E3311EA2986F0084C383 /* FIreParticles.sks */,
+				4FA26BD81EAA722600F72AC7 /* Glass.sks */,
+				4FA26BD61EAA71BD00F72AC7 /* glass.png */,
+				4F8FF8331EA40CA200F10971 /* spark.png */,
 				4FE7C3F31EA7973900FA9992 /* Drone.swift */,
 				4F5BC4CB1E96FE50002BA2A3 /* GameViewController.swift */,
 				4F5BC4CD1E96FE50002BA2A3 /* Main.storyboard */,
@@ -154,8 +165,6 @@
 				4F5BC4D51E96FE50002BA2A3 /* Info.plist */,
 				4F0D1C321E9AA17500F62DF8 /* IntroScene.sks */,
 				4F0D1C341E9AA18600F62DF8 /* IntroScene.swift */,
-				4FC0E3311EA2986F0084C383 /* FIreParticles.sks */,
-				4F8FF8331EA40CA200F10971 /* spark.png */,
 			);
 			path = missleMadness;
 			sourceTree = "<group>";
@@ -260,6 +269,7 @@
 				4F8FF8341EA40CA200F10971 /* spark.png in Resources */,
 				4F8FF8591EA433E300F10971 /* fail7.caf in Resources */,
 				4F8FF8531EA433E300F10971 /* fail1.caf in Resources */,
+				4FA26BD91EAA722600F72AC7 /* Glass.sks in Resources */,
 				4F8FF8521EA433E300F10971 /* fail0.caf in Resources */,
 				4F0D1C331E9AA17500F62DF8 /* IntroScene.sks in Resources */,
 				4F8FF85E1EA433E300F10971 /* fail12.caf in Resources */,
@@ -288,6 +298,7 @@
 				4F5BC4C81E96FE50002BA2A3 /* Actions.sks in Resources */,
 				4F0D1C301E9958AE00F62DF8 /* BMgermar.TTF in Resources */,
 				4F8FF85C1EA433E300F10971 /* fail10.caf in Resources */,
+				4FA26BD71EAA71BD00F72AC7 /* glass.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,6 +314,7 @@
 				4F5BC4CA1E96FE50002BA2A3 /* GameScene.swift in Sources */,
 				4F0D1C351E9AA18600F62DF8 /* IntroScene.swift in Sources */,
 				4F5BC4CC1E96FE50002BA2A3 /* GameViewController.swift in Sources */,
+				4FA26BD51EAA69CE00F72AC7 /* Base.swift in Sources */,
 				4F5BC4C41E96FE50002BA2A3 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

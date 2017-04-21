@@ -50,6 +50,8 @@ class GameScene: SKScene {
     var gameIsActive = false
     
     var activeBase = CGPoint.zero
+    
+    var baseArray = [CGPoint]()
 
     override func didMove(to view: SKView) {
         
@@ -84,6 +86,9 @@ class GameScene: SKScene {
         createGround()
         addPlayer()
         
+        setupBaseArray()
+        addBases()
+        
         setUpbackground()
         
         createInstructionLabel()
@@ -97,6 +102,38 @@ class GameScene: SKScene {
     
     
     // MARK: ======== INITIAL SETUP
+    
+    
+    
+    func setupBaseArray() {
+        
+        baseArray.append(CGPoint(x: screenWidth * 0.15, y: ground.position.y))
+        baseArray.append(CGPoint(x: screenWidth * 0.3, y: ground.position.y))
+        baseArray.append(CGPoint(x: screenWidth * 0.45, y: ground.position.y))
+        baseArray.append(CGPoint(x: -screenWidth * 0.15, y: ground.position.y))
+        baseArray.append(CGPoint(x: -screenWidth * 0.3, y: ground.position.y))
+        baseArray.append(CGPoint(x: -screenWidth * 0.45, y: ground.position.y))
+        
+    }
+    
+    func addBases(){
+        
+        for item in baseArray {
+            
+            print(item)
+            let base:Base = Base(imageNamed:"base")
+            addChild(base)
+            base.position = CGPoint(x: item.x , y: item.y + base.size.height / 2)
+            
+        }
+        
+        
+        
+    }
+    
+    
+    
+    
     
     
     
@@ -404,6 +441,13 @@ class GameScene: SKScene {
         droneBomb.name = "droneBomb"
         droneBomb.position = CGPoint(x: dronePosition.x, y: dronePosition.y - 45)
         self.addChild(droneBomb)
+        
+        droneBomb.physicsBody = SKPhysicsBody(circleOfRadius: droneBomb.size.width / 3)
+        droneBomb.physicsBody!.categoryBitMask = BodyType.enemyBomb.rawValue
+        droneBomb.physicsBody!.contactTestBitMask = BodyType.base.rawValue | BodyType.bullet.rawValue
+        droneBomb.physicsBody!.isDynamic = true
+        droneBomb.physicsBody!.affectedByGravity = false
+        droneBomb.physicsBody!.allowsRotation = false
         
         let scaleY = SKAction.scaleX(by: 1, y: 1.5, duration: 0.5)
         droneBomb.run(scaleY)
