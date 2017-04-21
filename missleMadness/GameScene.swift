@@ -251,11 +251,56 @@ class GameScene: SKScene {
         
         initiateDrone()
         
+        // check to see if game is over
+        
+        startGameOverTesting()
+        
         
         // clear off screen objects
         
         clearOffScreenItems()
         
+        
+    }
+    
+    func startGameOverTesting() {
+        
+        let block = SKAction.run(gameOverTest)
+        let wait = SKAction.wait(forDuration: 1)
+        let seq = SKAction.sequence([ wait, block ])
+        let rep = SKAction.repeatForever(seq)
+        self.run(rep, withKey: "gameOverTest")
+        
+    }
+    
+    func gameOverTest() {
+        
+        var destroyedBases = 0
+        self.enumerateChildNodes(withName: "base") {
+            node, stop in
+            
+            if let someBase: Base = node as? Base {
+                
+                if someBase.alreadyDestroyed == true {
+                    
+                    destroyedBases += 1
+                    
+                } else {
+                    
+                    self.activeBase = someBase.position
+                    
+                }
+            }
+            
+            /////////
+            
+            if destroyedBases == self.baseArray.count {
+                
+                self.gameOver()
+                
+            }
+            
+        }
         
     }
     
@@ -650,6 +695,15 @@ class GameScene: SKScene {
         
     }
     
+    
+    // MARK: ======== GAME OVER
+    
+    func gameOver() {
+        
+        print("game over")
+        
+        
+    }
     
     
 }
