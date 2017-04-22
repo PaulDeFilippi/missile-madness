@@ -16,8 +16,9 @@ class EnemyMissile: SKNode {
     
     let fireEmitter = SKEmitterNode(fileNamed: "FIreParticles")
     
-    
-    
+    var hitsToKill = 2
+    var hitCount = 0
+    var damagePoints = 4
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -91,6 +92,37 @@ class EnemyMissile: SKNode {
         //fireEmitter!.numParticlesToEmit = 200
         
         self.addChild(fireEmitter!)
+        
+    }
+    
+    func hit() -> Bool {
+        
+        hitCount += 1
+        
+        if hitCount == hitsToKill {
+            
+            self.removeFromParent()
+            return true
+            
+        
+        
+        } else {
+            damagePoints = 1
+            
+            fireEmitter!.numParticlesToEmit = 10
+            
+            missileNode.removeAction(forKey: "animation")
+            return false
+        }
+    
+    }
+    
+    
+    func destroy() {
+        
+        self.name = "removeNode"
+        
+        
         
     }
     

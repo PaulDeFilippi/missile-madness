@@ -366,6 +366,8 @@ class GameScene: SKScene {
     
     func launchEnemyMissile() {
         
+        createExplosion(atLocation: CGPoint(x: 0, y: screenHeight / 2), image: "explosion")
+        
         let missile:EnemyMissile = EnemyMissile()
         missile.createMissile(theImage: "enemyMissile")
         addChild(missile)
@@ -694,6 +696,40 @@ class GameScene: SKScene {
         self.run(theSound)
         
     }
+    
+    
+    
+        // MARK: ======== EXPLOSION
+    
+    func createExplosion(atLocation: CGPoint, image: String) {
+        
+        let explosion = SKSpriteNode(imageNamed: image)
+        explosion.position = atLocation
+        self.addChild(explosion)
+        explosion.zPosition = 1
+        explosion.xScale = 0.1
+        explosion.yScale = explosion.xScale
+        
+        let grow = SKAction.scale(to: 1, duration: 0.5)
+        grow.timingMode = .easeOut
+        let color = SKAction.colorize(with: SKColor.white, colorBlendFactor: 0.5, duration: 0.5)
+        let group = SKAction.group([grow, color])
+        
+        let fade = SKAction.fadeAlpha(to: 0, duration: 1)
+        fade.timingMode = .easeIn
+        let shrink = SKAction.scale(to: 0.8, duration: 1)
+        let group2 = SKAction.group([fade, shrink])
+        
+        let remove = SKAction.removeFromParent()
+        let seq = SKAction.sequence([group, group2, remove])
+        explosion.run(seq)
+        
+    }
+    
+    
+    
+    
+    // MARK: ======== CONTACT LISTENER
     
     
     // MARK: ======== GAME OVER
