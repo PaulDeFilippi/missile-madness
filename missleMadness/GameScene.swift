@@ -22,7 +22,7 @@ enum BodyType:UInt32 {
     
 }
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var isPhone = true
     var screenWidth:CGFloat = 0
@@ -66,6 +66,7 @@ class GameScene: SKScene {
         
         //important - this is how we adjust overall gravity
         physicsWorld.gravity = CGVector(dx: 0, dy:  -0.1)
+        physicsWorld.contactDelegate = self
         
         screenWidth = self.view!.bounds.width
         screenHeight = self.view!.bounds.height
@@ -732,6 +733,66 @@ class GameScene: SKScene {
     // MARK: ======== CONTACT LISTENER
     
     
+    func didBeginContact(contact: SKPhysicsContact) {
+        
+        if contact.bodyA.categoryBitMask == BodyType.enemyMissile.rawValue && contact.bodyB.categoryBitMask == BodyType.bullet.rawValue {
+            
+            if let missile = contact.bodyA.node! as? EnemyMissile {
+                
+                enemyMissileAndBullet(theMissile: missile)
+                
+                
+                
+            }
+            
+            contact.bodyB.node?.name = "removeNode"
+            
+            
+            
+            
+        } else if contact.bodyA.categoryBitMask == BodyType.bullet.rawValue && contact.bodyB.categoryBitMask == BodyType.enemyMissile.rawValue {
+            
+            if let missile = contact.bodyB.node! as? EnemyMissile {
+                
+                enemyMissileAndBullet(theMissile: missile)
+                
+                
+                
+            }
+            
+            contact.bodyA.node?.name = "removeNode"
+            
+            
+            
+            
+        }
+        
+        
+        
+    }
+    
+    func enemyMissileAndBullet(theMissile: EnemyMissile) {
+        
+        let thePoint: CGPoint = theMissile.position
+        
+        if theMissile.hit() == true {
+            
+            createExplosion(atLocation: thePoint, image: "explosion")
+            playSound(name: "explosion1.caf")
+            
+        } else {
+            
+            playSound(name: "ricochet.caf")
+            
+        }
+        
+        
+        
+    }
+    
+    
+    
+    
     // MARK: ======== GAME OVER
     
     func gameOver() {
@@ -739,6 +800,15 @@ class GameScene: SKScene {
         print("game over")
         
         
+    }
+    
+    override func didSimulatePhysics() {
+        self.enumerateChildNodes(withName: "removeNode") {
+            
+            node, stop in
+            
+            node.removeFromParent()
+        }
     }
     
     
