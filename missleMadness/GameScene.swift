@@ -52,6 +52,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var activeBase = CGPoint.zero
     
     var baseArray = [CGPoint]()
+    
+    var level1 = 1
+    var score = 0
+    var attacksLaunched = 0
 
     override func didMove(to view: SKView) {
         
@@ -84,6 +88,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.backgroundColor = SKColor.black
         self.anchorPoint = CGPoint(x: 0.5, y: 0.0)
         
+        setLevelVars()
+        
         createGround()
         addPlayer()
         
@@ -103,6 +109,37 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     // MARK: ======== INITIAL SETUP
+    
+    
+    func setLevelVars() {
+        
+        if level == 1 {
+            
+            physicsWorld.gravity = CGVector(dx: 0, dy:  -0.1)
+            
+            
+            
+        } else if level == 2 {
+            
+            physicsWorld.gravity = CGVector(dx: 0, dy:  -0.12)
+            
+            
+            
+        } else if level == 3 {
+            
+            physicsWorld.gravity = CGVector(dx: 0, dy:  -0.14)
+            
+            
+            
+        } else {
+            
+            physicsWorld.gravity = CGVector(dx: 0, dy:  -0.18)
+            
+            
+            
+        }
+        
+    }
     
     
     
@@ -595,7 +632,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         bullet.physicsBody!.applyForce(theForce)
         
-        createFiringParticles( bullet.position, force: theForce)
+        createFiringParticles(bullet.position, force: theForce)
         
     }
     
@@ -733,22 +770,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // MARK: ======== CONTACT LISTENER
     
     
-    func didBeginContact(contact: SKPhysicsContact) {
+    func didBegin(_ contact: SKPhysicsContact) {
         
         if contact.bodyA.categoryBitMask == BodyType.enemyMissile.rawValue && contact.bodyB.categoryBitMask == BodyType.bullet.rawValue {
             
             if let missile = contact.bodyA.node! as? EnemyMissile {
                 
                 enemyMissileAndBullet(theMissile: missile)
-                
-                
-                
+            
             }
             
             contact.bodyB.node?.name = "removeNode"
-            
-            
-            
             
         } else if contact.bodyA.categoryBitMask == BodyType.bullet.rawValue && contact.bodyB.categoryBitMask == BodyType.enemyMissile.rawValue {
             
@@ -756,18 +788,149 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
                 enemyMissileAndBullet(theMissile: missile)
                 
-                
-                
             }
             
             contact.bodyA.node?.name = "removeNode"
             
+        } else if contact.bodyA.categoryBitMask == BodyType.bullet.rawValue && contact.bodyB.categoryBitMask == BodyType.enemyBomb.rawValue {
+            
+            createExplosion(atLocation: contact.bodyB.node!.position, image: "explosion2")
+            
+            contact.bodyB.node?.name = "removeNode"
+            contact.bodyA.node?.name = "removeNode"
+            
+            playSound(name: "loud_bomb.caf")
+            
+
+        } else if contact.bodyA.categoryBitMask == BodyType.enemyBomb.rawValue && contact.bodyB.categoryBitMask == BodyType.bullet.rawValue {
+            
+            createExplosion(atLocation: contact.bodyA.node!.position, image: "explosion2")
+            
+            contact.bodyB.node?.name = "removeNode"
+            contact.bodyA.node?.name = "removeNode"
+            
+            playSound(name: "loud_bomb.caf")
             
             
+        } else if contact.bodyA.categoryBitMask == BodyType.base.rawValue && contact.bodyB.categoryBitMask == BodyType.bullet.rawValue {
+            
+            contact.bodyB.node?.name = "removeNode"
+            
+        } else if contact.bodyA.categoryBitMask == BodyType.bullet.rawValue && contact.bodyB.categoryBitMask == BodyType.base.rawValue {
+            
+            contact.bodyA.node?.name = "removeNode"
+            
+        } else if contact.bodyA.categoryBitMask == BodyType.enemyMissile.rawValue && contact.bodyB.categoryBitMask == BodyType.playerBase.rawValue {
+            
+            if let missile = contact.bodyA.node! as? EnemyMissile {
+                
+                createExplosion(atLocation: missile.position, image: "explosion")
+                missile.destroy()
+                
+            }
+            
+            // subtract main player health
+            
+            playSound(name: "explosion2.caf")
+            
+
+        } else if contact.bodyA.categoryBitMask == BodyType.playerBase.rawValue && contact.bodyB.categoryBitMask == BodyType.enemyMissile.rawValue {
+            
+            if let missile = contact.bodyB.node! as? EnemyMissile {
+                
+                createExplosion(atLocation: missile.position, image: "explosion")
+                missile.destroy()
+                
+            }
+            
+            // subtract main player health
+            
+            playSound(name: "explosion2.caf")
+            
+        } else if contact.bodyA.categoryBitMask == BodyType.enemyMissile.rawValue && contact.bodyB.categoryBitMask == BodyType.ground.rawValue {
+            
+            if let missile = contact.bodyB.node! as? EnemyMissile {
+                
+                createExplosion(atLocation: missile.position, image: "explosion")
+                missile.destroy()
+                
+            }
+            
+            playSound(name: "explosion2.caf")
+            
+        } else if contact.bodyA.categoryBitMask == BodyType.ground.rawValue && contact.bodyB.categoryBitMask == BodyType.enemyMissile.rawValue {
+            
+            if let missile = contact.bodyB.node! as? EnemyMissile {
+                
+                createExplosion(atLocation: missile.position, image: "explosion")
+                missile.destroy()
+                
+            }
+            
+            playSound(name: "explosion2.caf")
+            
+        } else if contact.bodyA.categoryBitMask == BodyType.enemyMissile.rawValue && contact.bodyB.categoryBitMask == BodyType.base.rawValue {
+            
+            if let missile = contact.bodyA.node! as? EnemyMissile {
+                
+                if let base = contact.bodyB.node! as? Base {
+                    
+                    base.hit(missile.damagePoints)
+                    
+                }
+                
+                createExplosion(atLocation: missile.position, image: "explosion")
+                missile.destroy()
+                
+            }
+            
+            playSound(name: "explosion2.caf")
+            
+        } else if contact.bodyA.categoryBitMask == BodyType.base.rawValue && contact.bodyB.categoryBitMask == BodyType.enemyMissile.rawValue {
+            
+            if let missile = contact.bodyB.node! as? EnemyMissile {
+                
+                if let base = contact.bodyA.node! as? Base {
+                    
+                    base.hit(missile.damagePoints)
+                    
+                }
+                
+                createExplosion(atLocation: missile.position, image: "explosion")
+                missile.destroy()
+                
+            }
+            
+            playSound(name: "explosion2.caf")
+            
+        } else if contact.bodyA.categoryBitMask == BodyType.enemyBomb.rawValue && contact.bodyB.categoryBitMask == BodyType.base.rawValue {
+            
+            if let base = contact.bodyB.node! as? Base {
+                
+                    
+                base.hit(base.maxDamage)
+                    
+                }
+                
+                createExplosion(atLocation: contact.bodyA.node!.position, image: "explosion2")
+                contact.bodyA.node?.name = "removeNode"
+            
+                playSound(name: "explosion2.caf")
+        
+        } else if contact.bodyA.categoryBitMask == BodyType.base.rawValue && contact.bodyB.categoryBitMask == BodyType.enemyBomb.rawValue {
+            
+            if let base = contact.bodyA.node! as? Base {
+                    
+                    base.hit(base.maxDamage)
+                    
+                }
+                
+                createExplosion(atLocation: contact.bodyB.node!.position, image: "explosion2")
+                contact.bodyA.node?.name = "removeNode"
+                
+                playSound(name: "explosion2.caf")
             
         }
-        
-        
         
     }
     
@@ -797,8 +960,96 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func gameOver() {
         
-        print("game over")
+        if gameIsActive == true {
+            
+            gameIsActive = false
+            
+            explodeAllMissiles()
+            stopGameActions()
+            moveDownBases()
+            
+            let wait = SKAction.wait(forDuration: 4)
+            let block = SKAction.run(restartGame)
+            let seq = SKAction.sequence([wait, block])
+            self.run(seq)
+            
+        }
         
+        
+    }
+    
+    func restartGame() {
+        
+        if gameIsActive == false {
+            
+            level1 = 1
+            score = 0
+            attacksLaunched = 0
+            
+            setLevelVars()
+            
+            startGame()
+            
+        }
+        
+    }
+    
+    func moveDownBases() {
+        
+        playSound(name: "restoreHealth.caf")
+        
+        self.enumerateChildNodes(withName: "base") {
+            
+            node, stop in
+            
+            if let someBase: Base = node as? Base {
+                
+                let wait = SKAction.wait(forDuration: 2)
+                let moveDown = SKAction.moveBy(x: 0, y: -200, duration: 3)
+                let block = SKAction.run(someBase.revive)
+                let moveUp = SKAction.moveBy(x: 0, y: 200, duration: 1)
+                let seq = SKAction.sequence([wait, moveDown, block, moveUp])
+                someBase.run(seq)
+                
+            }
+            
+        }
+        
+    }
+    
+    func stopGameActions() {
+        
+        self.removeAction(forKey: "gameOverTest")
+        self.removeAction(forKey: "droneAction")
+        self.removeAction(forKey: "enemyLaunchAction")
+        self.removeAction(forKey: "dotAction")
+        self.removeAction(forKey: "clearAction")
+        self.removeAction(forKey: "dropBombAction")
+        
+    }
+    
+    func explodeAllMissiles() {
+        
+        playSound(name: "explosion1.caf")
+        
+        self.enumerateChildNodes(withName: "enemyMissile") {
+            
+            node, stop in
+            
+            if let enemyMissile: EnemyMissile = node as? EnemyMissile {
+                
+                self.createExplosion(atLocation: enemyMissile.position, image: "explosion")
+                enemyMissile.destroy()
+            }
+        }
+        
+        self.enumerateChildNodes(withName: "enemyMissile") {
+            
+            node, stop in
+            
+                self.createExplosion(atLocation: node.position, image: "explosion2")
+                node.name = "removeNode"
+        }
         
     }
     

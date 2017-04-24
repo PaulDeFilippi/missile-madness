@@ -43,9 +43,6 @@ class EnemyMissile: SKNode {
         body.categoryBitMask = BodyType.enemyMissile.rawValue
         body.contactTestBitMask = BodyType.ground.rawValue | BodyType.bullet.rawValue | BodyType.base.rawValue | BodyType.playerBase.rawValue
         
-        
-        
-        
         self.physicsBody = body
         
         self.name = "enemyMissile"
@@ -104,9 +101,8 @@ class EnemyMissile: SKNode {
             self.removeFromParent()
             return true
             
-        
-        
         } else {
+            
             damagePoints = 1
             
             fireEmitter!.numParticlesToEmit = 10
