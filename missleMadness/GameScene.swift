@@ -32,6 +32,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let scoreLabel = SKLabelNode(fontNamed: "BM germar")
     let levelLabel = SKLabelNode(fontNamed: "BM germar")
     
+    var health = 5
+    var healthMeter = SKSpriteNode(imageNamed: "healthMeter1")
+    
     
     let playerBase = SKSpriteNode(imageNamed: "playerBase")
     let turret = SKSpriteNode(imageNamed: "turret")
@@ -284,6 +287,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         target.zPosition = 98
         target.position = CGPoint(x: turret.position.x, y: turret.position.y + length)
         
+        addChild(healthMeter)
+        healthMeter.zPosition = 1000
+        healthMeter.position = CGPoint(x: 0, y: playerBase.position.y - 20)
+        
         
     }
     
@@ -387,15 +394,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             if (node.position.x < -(self.screenWidth / 2)) {
                 
-                node.removeFromParent()
+                node.name = "removeNode"
                 
             } else if (node.position.x > (self.screenWidth / 2)) {
                 
-                node.removeFromParent()
+                node.name = "removeNode"
             
             } else if (node.position.y > self.screenHeight) {
                 
-                node.removeFromParent()
+                node.name = "removeNode"
 
             }
             
@@ -405,6 +412,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func clearEnemyMissiles() {
+        
+        self.enumerateChildNodes(withName: "enemyMissile") {
+            node, stop in
+            
+            if (node.position.x < -(self.screenWidth / 2)) {
+                
+                node.removeFromParent()
+                
+            } else if (node.position.x > (self.screenWidth / 2)) {
+                
+                node.name = "removeNode"
+                
+            }
+            
+        }
         
         
         
@@ -830,14 +852,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func levelUp() {
         
+        let wait = SKAction.wait(forDuration: 1)
+        let block = SKAction.run(successSound)
+        let seq = SKAction.sequence([wait, block])
+        self.run(seq)
+        
         attacksLaunched = 0
         level += 1
         
         levelLabel.text = "Level: " + String(level)
         
+        resetHealth()
+        
         setLevelVars()
         
         startGame()
+        
+    }
+    
+    func successSound() {
+        
+        playRandomSound(baseName: "success", withRange: 3)
         
     }
     
@@ -925,6 +960,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
+    func playRandomSound(baseName: String, withRange: UInt32) {
+        
+        let randomNum = arc4random_uniform(withRange)
+        
+        playSound(name: baseName + String(randomNum) + ".caf")
+        
+    }
+    
     
     
         // MARK: ======== EXPLOSION
@@ -984,6 +1027,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
         } else if contact.bodyA.categoryBitMask == BodyType.bullet.rawValue && contact.bodyB.categoryBitMask == BodyType.enemyBomb.rawValue {
             
+            updateScore(scoreToAdd: 50)
             createExplosion(atLocation: contact.bodyB.node!.position, image: "explosion2")
             
             contact.bodyB.node?.name = "removeNode"
@@ -994,6 +1038,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         } else if contact.bodyA.categoryBitMask == BodyType.enemyBomb.rawValue && contact.bodyB.categoryBitMask == BodyType.bullet.rawValue {
             
+            updateScore(scoreToAdd: 50)
             createExplosion(atLocation: contact.bodyA.node!.position, image: "explosion2")
             
             contact.bodyB.node?.name = "removeNode"
@@ -1019,7 +1064,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
             }
             
-            // subtract main player health
+            subtractHealth()
             
             playSound(name: "explosion2.caf")
             
@@ -1033,7 +1078,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
             }
             
-            // subtract main player health
+            subtractHealth()
             
             playSound(name: "explosion2.caf")
             
@@ -1131,15 +1176,42 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if theMissile.hit() == true {
             
             createExplosion(atLocation: thePoint, image: "explosion")
+            updateScore(scoreToAdd: 15)
+            
             playSound(name: "explosion1.caf")
             
         } else {
             
             playSound(name: "ricochet.caf")
+            updateScore(scoreToAdd: 5)
             
         }
         
         
+        
+    }
+    
+    
+    
+    // MARK: ======== HEALTH
+    
+    func subtractHealth() {
+        
+        health = health + 1
+        healthMeter.texture = SKTexture(imageNamed: "healthMeter" + String(health))
+        
+        if health == 6 {
+            
+            gameOver()
+            
+        }
+        
+    }
+    
+    func resetHealth() {
+        
+        health = 1
+        healthMeter.texture = SKTexture(imageNamed: "healthMeter" + String(health))
         
     }
     
@@ -1153,6 +1225,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if gameIsActive == true {
             
             gameIsActive = false
+            
+            let waitA = SKAction.wait(forDuration: 2)
+            let blockA = SKAction.run(failSounds)
+            let seqA = SKAction.sequence([waitA, blockA])
+            self.run(seqA)
             
             createMainLabel("Game Over")
             
@@ -1170,6 +1247,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
+    func failSounds() {
+        
+        playRandomSound(baseName: "fail", withRange: 14)
+        
+    }
+    
     func restartGame() {
         
         if gameIsActive == false {
@@ -1183,6 +1266,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             setLevelVars()
             
+            resetHealth()
             startGame()
             
         }
