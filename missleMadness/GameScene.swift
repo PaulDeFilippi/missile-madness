@@ -28,6 +28,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var screenWidth:CGFloat = 0
     var screenHeight:CGFloat = 0
     let instructionLabel = SKLabelNode(fontNamed: "BM germar")
+    let statsLabel = SKLabelNode(fontNamed: "BM germar")
+    let scoreLabel = SKLabelNode(fontNamed: "BM germar")
+    let levelLabel = SKLabelNode(fontNamed: "BM germar")
+    
     
     let playerBase = SKSpriteNode(imageNamed: "playerBase")
     let turret = SKSpriteNode(imageNamed: "turret")
@@ -53,9 +57,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var baseArray = [CGPoint]()
     
-    var level1 = 1
+    var level = 1
     var score = 0
     var attacksLaunched = 0
+    var attacksTotal = 25
+    var droneHowOften: UInt32 = 30
+    var droneBombSpeed: CFTimeInterval = 5
+    var missileRate: CFTimeInterval = 2
+    
 
     override func didMove(to view: SKView) {
         
@@ -99,10 +108,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         setUpbackground()
         
         createInstructionLabel()
+        createLevelLabel()
+        createScoreLabel()
+        createStatsLabel()
         
         playBackgroundSound("levelsound")
         
         startGame()
+        
+        createMainLabel("Defend!")
         
     }
     
@@ -113,28 +127,35 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func setLevelVars() {
         
+        attacksTotal = level * 25
+        
         if level == 1 {
             
             physicsWorld.gravity = CGVector(dx: 0, dy:  -0.1)
-            
-            
+            droneBombSpeed = 4
+            missileRate = 3
             
         } else if level == 2 {
             
             physicsWorld.gravity = CGVector(dx: 0, dy:  -0.12)
+            droneBombSpeed = 3
+            missileRate = 2.5
             
             
             
         } else if level == 3 {
             
             physicsWorld.gravity = CGVector(dx: 0, dy:  -0.14)
+            droneBombSpeed = 2
+            missileRate = 2
             
             
             
         } else {
             
             physicsWorld.gravity = CGVector(dx: 0, dy:  -0.18)
-            
+            droneBombSpeed = 2
+            missileRate = 1.5
             
             
         }
@@ -394,7 +415,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func initiateEnemyMissile() {
         
-        let wait = SKAction.wait(forDuration: 2)
+        let wait = SKAction.wait(forDuration: missileRate)
         let block = SKAction.run(launchEnemyMissile)
         let seq = SKAction.sequence([ block, wait ])
         let rep = SKAction.repeatForever(seq)
@@ -404,7 +425,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func launchEnemyMissile() {
         
-        createExplosion(atLocation: CGPoint(x: 0, y: screenHeight / 2), image: "explosion")
+        //createExplosion(atLocation: CGPoint(x: 0, y: screenHeight / 2), image: "explosion")
+        
+        attacksLaunched += 1
+        updateStats()
         
         let missile:EnemyMissile = EnemyMissile()
         missile.createMissile(theImage: "enemyMissile")
@@ -513,6 +537,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func dropBombFromDrone() {
         
+        attacksLaunched += 1
+        updateStats()
+        
         var dronePosition = CGPoint.zero
         
         self.enumerateChildNodes(withName: "drone") {
@@ -537,7 +564,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let scaleY = SKAction.scaleX(by: 1, y: 1.5, duration: 0.5)
         droneBomb.run(scaleY)
         
-        let move = SKAction.move(to: activeBase, duration: 4)
+        let move = SKAction.move(to: activeBase, duration: droneBombSpeed)
         droneBomb.run(move)
         
     }
@@ -652,6 +679,73 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
+    
+    
+    // MARK: =========== LABELS
+    
+    func createLevelLabel() {
+        
+        levelLabel.horizontalAlignmentMode = .center
+        levelLabel.verticalAlignmentMode = .center
+        levelLabel.fontColor = SKColor.white
+        levelLabel.text = "Level: " + String(level)
+        
+        levelLabel.zPosition = 300
+        
+        addChild(levelLabel)
+        
+        if isPhone == true {
+            
+            levelLabel.position = CGPoint(x: 0, y: screenHeight - 30)
+            levelLabel.fontSize = 30
+            
+        } else {
+            
+            levelLabel.position = CGPoint(x: 0, y: screenHeight - 30)
+            levelLabel.fontSize = 40
+            
+        }
+        
+        
+        
+    }
+    
+    
+    
+    func createScoreLabel() {
+        
+        scoreLabel.horizontalAlignmentMode = .center
+        scoreLabel.verticalAlignmentMode = .center
+        scoreLabel.fontColor = SKColor.white
+        scoreLabel.text = "Score: " + String(score)
+        
+        scoreLabel.zPosition = 300
+        
+        addChild(scoreLabel)
+        
+        if isPhone == true {
+            
+            scoreLabel.position = CGPoint(x: 0, y: screenHeight - 30)
+            scoreLabel.fontSize = 30
+            
+        } else {
+            
+            scoreLabel.position = CGPoint(x: 0, y: screenHeight - 30)
+            scoreLabel.fontSize = 40
+            
+        }
+        
+        
+        
+    }
+    
+    func updateScore(scoreToAdd: Int) {
+        
+        score = score + scoreToAdd
+        scoreLabel.text = "Score: " + String(score)
+        
+    }
+    
     func createInstructionLabel() {
         
         instructionLabel.horizontalAlignmentMode = .center
@@ -663,12 +757,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         if isPhone == true {
             
-            instructionLabel.position = CGPoint(x: 0, y: screenHeight / 2)
+            instructionLabel.position = CGPoint(x: 0, y: (screenHeight / 2) - 55)
             instructionLabel.fontSize = 30
             
         } else {
             
-            instructionLabel.position = CGPoint(x: 0, y: screenHeight / 2)
+            instructionLabel.position = CGPoint(x: 0, y: (screenHeight / 2) - 85)
             instructionLabel.fontSize = 40
             
         }
@@ -683,6 +777,102 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let remove = SKAction.removeFromParent()
         let seq2 = SKAction.sequence( [repeated, wait, remove] )
         instructionLabel.run(seq2)
+    
+    }
+    
+    func createStatsLabel() {
+        
+        statsLabel.horizontalAlignmentMode = .left
+        statsLabel.verticalAlignmentMode = .center
+        statsLabel.fontColor = SKColor.white
+        statsLabel.text = "Wave: " + String(attacksLaunched) + "/" + String(attacksTotal)
+        
+        statsLabel.zPosition = 300
+        
+        addChild(statsLabel)
+        
+        if isPhone == true {
+            
+            statsLabel.position = CGPoint(x: -(screenWidth / 2) * 0.9, y: screenHeight - 30)
+            statsLabel.fontSize = 20
+            
+        } else {
+            
+            statsLabel.position = CGPoint(x: -(screenWidth / 2) * 0.9, y: screenHeight - 30)
+            statsLabel.fontSize = 40
+            
+        }
+        
+    }
+    
+    func updateStats() {
+        
+        statsLabel.text = "Wave: " + String(attacksLaunched) + "/" + String(attacksTotal)
+        
+        if attacksLaunched == attacksTotal {
+            
+            // LEVEL UP
+            
+            createMainLabel("Level Up!")
+            stopGameActions()
+            moveDownBases()
+            explodeAllMissiles()
+            
+            let wait = SKAction.wait(forDuration: 4)
+            let block = SKAction.run(levelUp)
+            let seq = SKAction.sequence( [wait, block])
+            self.run(seq)
+            
+        }
+        
+        
+    }
+    
+    func levelUp() {
+        
+        attacksLaunched = 0
+        level += 1
+        
+        levelLabel.text = "Level: " + String(level)
+        
+        setLevelVars()
+        
+        startGame()
+        
+    }
+    
+    func createMainLabel(_ theText:String) {
+        
+        let bigMiddleLabel:SKLabelNode = SKLabelNode(fontNamed: "BM germar")
+        
+        bigMiddleLabel.horizontalAlignmentMode = .center
+        bigMiddleLabel.verticalAlignmentMode = .center
+        bigMiddleLabel.fontColor = SKColor.white
+        bigMiddleLabel.text = theText
+        bigMiddleLabel.fontSize = 100
+        bigMiddleLabel.zPosition = 300
+        
+        addChild(bigMiddleLabel)
+        
+        
+        if (isPhone == true ) {
+            
+            bigMiddleLabel.position = CGPoint(x:0 , y: (screenHeight / 2) + 15 )
+            
+        } else  {
+            bigMiddleLabel.position = CGPoint(x: 0 , y: screenHeight / 2 )
+            
+        }
+        
+        
+        let wait:SKAction = SKAction.wait(forDuration: 2)
+        let fade:SKAction = SKAction.fadeAlpha(to: 0, duration: 1)
+        let remove:SKAction = SKAction.removeFromParent()
+        let seq:SKAction = SKAction.sequence( [wait, fade, remove])
+        bigMiddleLabel.run(seq)
+        
+        
+        
     }
     
     
@@ -964,6 +1154,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             gameIsActive = false
             
+            createMainLabel("Game Over")
+            
             explodeAllMissiles()
             stopGameActions()
             moveDownBases()
@@ -982,9 +1174,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if gameIsActive == false {
             
-            level1 = 1
+            level = 1
             score = 0
             attacksLaunched = 0
+            
+            levelLabel.text = "Level: " + String(level)
+            scoreLabel.text = "Level: " + String(score)
             
             setLevelVars()
             
