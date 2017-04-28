@@ -87,8 +87,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         screenWidth = self.view!.bounds.width
         screenHeight = self.view!.bounds.height
         
-        //rotateRec.addTarget(self, action: #selector(("rotatedView:")))
-        
         rotateRec.addTarget(self, action: #selector(GameScene.rotatedView(_:)))
         self.view!.addGestureRecognizer(rotateRec)
         
